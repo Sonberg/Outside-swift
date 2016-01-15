@@ -9,35 +9,54 @@
 import UIKit
 import SwiftyJSON
 import CoreLocation
+import CoreData
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate  {
+
     
     // MARK: Outlet
+    @IBOutlet weak var backgroundImageView: UIImageViewAsync!
+    @IBOutlet weak var upDragArrow: UIImageViewJumpingArrow!
     @IBOutlet weak var tempMain: UILabel!
     @IBOutlet weak var tempDay: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var countryLabel: UILabel!
     @IBOutlet weak var descLabel: UILabel!
-    @IBOutlet weak var latLongLabel: UILabel!
     
-    let locationManager = CLLocationManager()
-    var lat : String = ""; var long : String = ""
-    var currentCity : String = ""
+    //MARK: Action handler
+    @IBAction func InfoButtonPressed(sender: AnyObject) {
+        self.save()
+    }
+    
+    // MARK: Model classes
+    var locationManager = CLLocationManager()
+    var weatherManager : WeatherModel = WeatherModel()
+    var flickrManager : FlickrModel = FlickrModel()
+    
+    var lat : String = "" ; var long : String = "" ; var currentCity : String = ""; var data : JSON = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        // Init Animation
+        self.backgroundImageView.scaleAnimation()
+        self.upDragArrow.bounceAnimation()
+        
+        
+        // Load Core Data
+        self.load()
+        
+        // Get users location
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         self.locationManager.distanceFilter = 5
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
-    
-        NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "fetchServerData", userInfo: nil, repeats: true)
+        
+        NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "updateLocation", userInfo: nil, repeats: true)
+        
     }
-    
-    func fetchServerData() {locationManager.startUpdatingLocation()}
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -45,68 +64,80 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     
-    // MARK: - Location Delegate Methods
+    // MARK: Location Delegate
+    func updateLocation() {self.locationManager.startUpdatingLocation()}
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last
         self.lat = String(location!.coordinate.latitude)
         self.long = String(location!.coordinate.longitude)
-        
-        callWeatherServ(String(location!.coordinate.latitude), long: String(location!.coordinate.longitude), completion: { (object) -> Void in
-            if object["cod"] == 200 {self.printData(object)}
-        })
-        
         self.locationManager.stopUpdatingLocation()
         
+        self.weatherManager.getWeather(lat, long: long, completion: { (object) -> Void in
+           // if (self.currentCity != String(object["name"])) { self.flickrManager.getData(String(object["name"])) }
+            self.printData(object)
+        })
+
     }
     
+    // MARK: - Location Error
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         print("Errors: " + error.localizedDescription)
     }
     
-    func callWeatherServ(lat: String, long: String, completion:(object: JSON) -> Void)
-    {
-        let url: String = "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&&appid=cb05bafcffeb1d4a7a6f3e897b7c5406&units=metric"
-        let finalUrl: NSURL = NSURL(string: url)!
+    // MARK: - Set new backgound image
+    func setImage(url : String) {
+        let imgURL: NSURL = NSURL(string: url)!
+        let request: NSURLRequest = NSURLRequest(URL: imgURL)
+        
         let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithURL(finalUrl, completionHandler: {data, response, error -> Void in
+        let task = session.dataTaskWithRequest(request){
+            (data, response, error) -> Void in
             
-            let json = JSON(data: data!, options: NSJSONReadingOptions.MutableContainers, error: nil)
-            
-            if (json != nil)
+            if (error == nil && data != nil)
             {
-                completion(object: json)
-                print(json["name"])
+                func display_image()
+                {
+                    //self.backgroundImageView.image = UIImage(data: data!)
+                }
                 
+                dispatch_async(dispatch_get_main_queue(), display_image)
             }
-        })
+            
+        }
+        
         task.resume()
     }
     
-    
     // MARK: - Print data to screen
     func printData(data: JSON) {
+        self.data = data;
         if (self.currentCity == "" || String(data["name"]) != self.currentCity) {
-            print(data)
             
         // Your current position
-        self.currentCity = String(data["name"]).truncate(20, trailing: "...")
+        self.currentCity = String(data["name"])
         let country = String(data["sys"]["country"])
-        let coord : String = ("Latitude: " + self.lat.truncate(8, trailing: "...") + " | Longitude: " + self.long.truncate(8, trailing: "..."))
         
         // Temp i celsius
-        let maxTemp = returnTemp(String(data["main"]["temp_max"]))
-        let minTemp = returnTemp(String(data["main"]["temp_min"]))
+        let maxTemp = self.returnTemp(String(data["main"]["temp_max"]))
+        let minTemp = self.returnTemp(String(data["main"]["temp_min"]))
         let currentTemp = returnTemp(String(data["main"]["temp"]))
         
         dispatch_async(dispatch_get_main_queue(), {
-                self.tempMain.text = currentTemp
+            if maxTemp != minTemp {
                 self.tempDay.text = maxTemp + " / " + minTemp
-                self.cityLabel.text = self.currentCity
-                self.countryLabel.text = country
-                self.descLabel.text = String(data["weather"][0]["description"])
-                self.latLongLabel.text = coord
+                self.tempDay.hidden = false
+            } else {
+                self.tempDay.hidden = true
+            }
+            
+            self.tempMain.text = currentTemp
+            self.cityLabel.text = self.currentCity.truncate(20, trailing: "...")
+            self.countryLabel.text? = country
+            self.descLabel.text? = String(data["weather"][0]["description"])
             })
         }
+        
+        
     }
     
     // MARK: - Filter temperature
@@ -114,7 +145,91 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let double = Double(temp)!;
         return (String(Int(double)) + "°")
     }
+    
+    // MARK: - Save data to core
+    func load() {
+        let appDel : AppDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        
+        let request = NSFetchRequest(entityName: "Data")
+        request.returnsObjectsAsFaults = false
+        //request.predicate = NSPredicate(format: "image = %@", backgroundImageView.image!)
+        
+        do {
+            let results : NSArray = try context.executeFetchRequest(request)
+            
+            if(results.count > 0) {
+                let res = results.lastObject
+                backgroundImageView.image = UIImage(data: res!.valueForKey("image") as! NSData)
+                print(res!.valueForKey("weather"))
+            } else {
+                backgroundImageView.downloadImage("https://source.unsplash.com/featured/")
+                
+                // Save data to Core
+                self.save()
+            }
+            
+        } catch let error as NSError {
+            print("Error: Error while fetching objects \(error)")
+        }
+        
+    }
+    
+    // MARK: - Load data from core
+    func save() {
+        self.clear()
+        
+        let image = UIImagePNGRepresentation(backgroundImageView.image!)
+        let appDel : AppDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        
+        let newData = NSEntityDescription.insertNewObjectForEntityForName("Data", inManagedObjectContext: context) as NSManagedObject
+        newData.setValue(image , forKey: "image")
+        newData.setValue("soligt", forKey: "weather")
+        
+        do {
+            try context.save()
+            print("data saved")
+        } catch let error as NSError {
+         print("Error: Couldnt save data \(error)")
+        }
+        
+    }
+    
+    //MARK: - Clear core data
+    func clear() {
+        let appDel : AppDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        
+        let fetchRequest = NSFetchRequest(entityName: "Data")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.executeRequest(deleteRequest)
+            print("data cleared")
+        } catch let error as NSError {
+            // TODO: handle the error
+            print(error)
+        }
+    }
+    
+    //MARK: - Shake for image change
+    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
+        if motion == .MotionShake {
+            backgroundImageView.downloadImage("https://source.unsplash.com/featured/")
+            self.save()
+        }
+    }
+    
+    // MARK: - Overlay Seque
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let DestViewController : DetailViewController = segue.destinationViewController as! DetailViewController
+        DestViewController.data = self.data
+        
+    }
+    
 }
+
 
 extension String {
     /// Truncates the string to length number of characters and
@@ -127,6 +242,3 @@ extension String {
         }
     }
 }
-
-
-

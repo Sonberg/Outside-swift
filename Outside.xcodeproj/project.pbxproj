@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		89BE926E1C288754001D7619 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BE926D1C288754001D7619 /* WeatherModel.swift */; };
+		89BE92701C28876C001D7619 /* FlickrModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BE926F1C28876C001D7619 /* FlickrModel.swift */; };
+		89D42A371C3D532F00EE89D7 /* UnsplashModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D42A361C3D532F00EE89D7 /* UnsplashModel.swift */; };
+		89D42A3B1C3D7BC300EE89D7 /* UIImageViewAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D42A3A1C3D7BC300EE89D7 /* UIImageViewAsync.swift */; };
 		89D960A01C26C76500C8E24C /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89D9609F1C26C76500C8E24C /* SwiftyJSON.framework */; };
-		89D960A21C26C82100C8E24C /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 89D960A11C26C82100C8E24C /* data.json */; };
-		89D960A41C26F70D00C8E24C /* WeatherController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D960A31C26F70D00C8E24C /* WeatherController.swift */; };
+		89DFDC451C3E68A5000DD50B /* UIImageViewJumpingArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DFDC441C3E68A5000DD50B /* UIImageViewJumpingArrow.swift */; };
+		89DFDC481C3E74D4000DD50B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DFDC471C3E74D4000DD50B /* Settings.swift */; };
 		89E347FD1C26BFDB000B38C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E347FC1C26BFDB000B38C3 /* AppDelegate.swift */; };
 		89E347FF1C26BFDB000B38C3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E347FE1C26BFDB000B38C3 /* ViewController.swift */; };
 		89E348021C26BFDB000B38C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89E348001C26BFDB000B38C3 /* Main.storyboard */; };
@@ -19,6 +23,7 @@
 		89E348151C26BFDB000B38C3 /* OutsideTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E348141C26BFDB000B38C3 /* OutsideTests.swift */; };
 		89E348201C26BFDB000B38C3 /* OutsideUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E3481F1C26BFDB000B38C3 /* OutsideUITests.swift */; };
 		89E3482E1C26C4EA000B38C3 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 89E3482D1C26C4EA000B38C3 /* Podfile */; };
+		89F9D7691C370C9D00669604 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F9D7681C370C9D00669604 /* DetailViewController.swift */; };
 		B13010A6C8453275B0C0C088 /* Pods_Outside.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7F1426F08B7056CB6A2128 /* Pods_Outside.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,9 +45,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		89BE926D1C288754001D7619 /* WeatherModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
+		89BE926F1C28876C001D7619 /* FlickrModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrModel.swift; sourceTree = "<group>"; };
+		89D42A361C3D532F00EE89D7 /* UnsplashModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnsplashModel.swift; sourceTree = "<group>"; };
+		89D42A3A1C3D7BC300EE89D7 /* UIImageViewAsync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewAsync.swift; sourceTree = "<group>"; };
 		89D9609F1C26C76500C8E24C /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "Pods/../build/Debug-iphoneos/SwiftyJSON.framework"; sourceTree = "<group>"; };
-		89D960A11C26C82100C8E24C /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = data.json; path = ../data.json; sourceTree = "<group>"; };
-		89D960A31C26F70D00C8E24C /* WeatherController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherController.swift; sourceTree = "<group>"; };
+		89DFDC441C3E68A5000DD50B /* UIImageViewJumpingArrow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewJumpingArrow.swift; sourceTree = "<group>"; };
+		89DFDC471C3E74D4000DD50B /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		89E347F91C26BFDB000B38C3 /* Outside.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Outside.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89E347FC1C26BFDB000B38C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		89E347FE1C26BFDB000B38C3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +67,7 @@
 		89E3481F1C26BFDB000B38C3 /* OutsideUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutsideUITests.swift; sourceTree = "<group>"; };
 		89E348211C26BFDB000B38C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		89E3482D1C26C4EA000B38C3 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		89F9D7681C370C9D00669604 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		BA7F1426F08B7056CB6A2128 /* Pods_Outside.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Outside.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE74ED2C907C95D74BE31C53 /* Pods-Outside.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Outside.release.xcconfig"; path = "Pods/Target Support Files/Pods-Outside/Pods-Outside.release.xcconfig"; sourceTree = "<group>"; };
 		DF894235315EF43B3F61884B /* Pods-Outside.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Outside.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Outside/Pods-Outside.debug.xcconfig"; sourceTree = "<group>"; };
@@ -99,6 +109,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		89BE926C1C288715001D7619 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				89BE926D1C288754001D7619 /* WeatherModel.swift */,
+				89BE926F1C28876C001D7619 /* FlickrModel.swift */,
+				89D42A361C3D532F00EE89D7 /* UnsplashModel.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		89DFDC461C3E693B000DD50B /* Subclasses */ = {
+			isa = PBXGroup;
+			children = (
+				89D42A3A1C3D7BC300EE89D7 /* UIImageViewAsync.swift */,
+				89DFDC441C3E68A5000DD50B /* UIImageViewJumpingArrow.swift */,
+			);
+			name = Subclasses;
+			sourceTree = "<group>";
+		};
 		89E347F01C26BFDB000B38C3 = {
 			isa = PBXGroup;
 			children = (
@@ -124,16 +153,18 @@
 		89E347FB1C26BFDB000B38C3 /* Outside */ = {
 			isa = PBXGroup;
 			children = (
-				89D960A11C26C82100C8E24C /* data.json */,
+				89DFDC461C3E693B000DD50B /* Subclasses */,
+				89BE926C1C288715001D7619 /* Models */,
 				89E3482D1C26C4EA000B38C3 /* Podfile */,
 				89E347FC1C26BFDB000B38C3 /* AppDelegate.swift */,
-				89D960A31C26F70D00C8E24C /* WeatherController.swift */,
 				89E347FE1C26BFDB000B38C3 /* ViewController.swift */,
 				89E348001C26BFDB000B38C3 /* Main.storyboard */,
+				89F9D7681C370C9D00669604 /* DetailViewController.swift */,
 				89E348061C26BFDB000B38C3 /* Assets.xcassets */,
 				89E348081C26BFDB000B38C3 /* LaunchScreen.storyboard */,
 				89E3480B1C26BFDB000B38C3 /* Info.plist */,
 				89E348031C26BFDB000B38C3 /* Outside.xcdatamodeld */,
+				89DFDC471C3E74D4000DD50B /* Settings.swift */,
 			);
 			path = Outside;
 			sourceTree = "<group>";
@@ -278,7 +309,6 @@
 				89E3480A1C26BFDB000B38C3 /* LaunchScreen.storyboard in Resources */,
 				89E348071C26BFDB000B38C3 /* Assets.xcassets in Resources */,
 				89E3482E1C26C4EA000B38C3 /* Podfile in Resources */,
-				89D960A21C26C82100C8E24C /* data.json in Resources */,
 				89E348021C26BFDB000B38C3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,10 +382,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89DFDC451C3E68A5000DD50B /* UIImageViewJumpingArrow.swift in Sources */,
+				89BE92701C28876C001D7619 /* FlickrModel.swift in Sources */,
 				89E348051C26BFDB000B38C3 /* Outside.xcdatamodeld in Sources */,
 				89E347FF1C26BFDB000B38C3 /* ViewController.swift in Sources */,
-				89D960A41C26F70D00C8E24C /* WeatherController.swift in Sources */,
 				89E347FD1C26BFDB000B38C3 /* AppDelegate.swift in Sources */,
+				89D42A371C3D532F00EE89D7 /* UnsplashModel.swift in Sources */,
+				89BE926E1C288754001D7619 /* WeatherModel.swift in Sources */,
+				89F9D7691C370C9D00669604 /* DetailViewController.swift in Sources */,
+				89DFDC481C3E74D4000DD50B /* Settings.swift in Sources */,
+				89D42A3B1C3D7BC300EE89D7 /* UIImageViewAsync.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
