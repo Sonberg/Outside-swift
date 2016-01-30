@@ -23,16 +23,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     @IBOutlet weak var countryLabel: UILabel!
     @IBOutlet weak var descLabel: UILabel!
     
-    //MARK: Action handler
-    @IBAction func InfoButtonPressed(sender: AnyObject) {
-        self.save()
-    }
-    
     // MARK: Model classes
     var locationManager = CLLocationManager()
-    var weatherManager : WeatherModel = WeatherModel()
-    var flickrManager : FlickrModel = FlickrModel()
-    
     var lat : String = "" ; var long : String = "" ; var currentCity : String = ""; var data : JSON = []
     
     override func viewDidLoad() {
@@ -42,10 +34,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         // Init Animation
         self.backgroundImageView.scaleAnimation()
         self.upDragArrow.bounceAnimation()
+        coreDataManager.sharedManager.backgroundImage = self.backgroundImageView
         
         
         // Load Core Data
-        self.load()
+        coreDataManager.sharedManager.load()
         
         // Get users location
         self.locationManager.delegate = self
@@ -58,10 +51,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     
     // MARK: Location Delegate
@@ -72,7 +61,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.long = String(location!.coordinate.longitude)
         self.locationManager.stopUpdatingLocation()
         
-        self.weatherManager.getWeather(lat, long: long, completion: { (object) -> Void in
+        WeatherModel.sharedManager.getWeather(lat, long: long, completion: { (object) -> Void in
            // if (self.currentCity != String(object["name"])) { self.flickrManager.getData(String(object["name"])) }
             self.printData(object)
         })
@@ -146,78 +135,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         return (String(Int(double)) + "°")
     }
     
-    // MARK: - Save data to core
-    func load() {
-        let appDel : AppDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
-        let context : NSManagedObjectContext = appDel.managedObjectContext
-        
-        let request = NSFetchRequest(entityName: "Data")
-        request.returnsObjectsAsFaults = false
-        //request.predicate = NSPredicate(format: "image = %@", backgroundImageView.image!)
-        
-        do {
-            let results : NSArray = try context.executeFetchRequest(request)
-            
-            if(results.count > 0) {
-                let res = results.lastObject
-                backgroundImageView.image = UIImage(data: res!.valueForKey("image") as! NSData)
-                print(res!.valueForKey("weather"))
-            } else {
-                backgroundImageView.downloadImage("https://source.unsplash.com/featured/")
-                
-                // Save data to Core
-                self.save()
-            }
-            
-        } catch let error as NSError {
-            print("Error: Error while fetching objects \(error)")
-        }
-        
-    }
-    
-    // MARK: - Load data from core
-    func save() {
-        self.clear()
-        
-        let image = UIImagePNGRepresentation(backgroundImageView.image!)
-        let appDel : AppDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
-        let context : NSManagedObjectContext = appDel.managedObjectContext
-        
-        let newData = NSEntityDescription.insertNewObjectForEntityForName("Data", inManagedObjectContext: context) as NSManagedObject
-        newData.setValue(image , forKey: "image")
-        newData.setValue("soligt", forKey: "weather")
-        
-        do {
-            try context.save()
-            print("data saved")
-        } catch let error as NSError {
-         print("Error: Couldnt save data \(error)")
-        }
-        
-    }
-    
-    //MARK: - Clear core data
-    func clear() {
-        let appDel : AppDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
-        let context : NSManagedObjectContext = appDel.managedObjectContext
-        
-        let fetchRequest = NSFetchRequest(entityName: "Data")
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
-        do {
-            try context.executeRequest(deleteRequest)
-            print("data cleared")
-        } catch let error as NSError {
-            // TODO: handle the error
-            print(error)
-        }
-    }
     
     //MARK: - Shake for image change
     override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
         if motion == .MotionShake {
             backgroundImageView.downloadImage("https://source.unsplash.com/featured/")
-            self.save()
         }
     }
     
@@ -225,7 +147,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let DestViewController : DetailViewController = segue.destinationViewController as! DetailViewController
         DestViewController.data = self.data
-        
+        DestViewController.backgroundView = self.backgroundImageView
     }
     
 }

@@ -9,7 +9,6 @@
 import UIKit
 
 class UIImageViewAsync : UIImageView {
-    
         
     init() {
         super.init(frame: CGRect())
@@ -35,6 +34,7 @@ class UIImageViewAsync : UIImageView {
             dispatch_async(dispatch_get_main_queue()) {
                 self.contentMode = UIViewContentMode.ScaleAspectFill
                 self.image = UIImage(data: data!)
+                coreDataManager.sharedManager.save()
             }
         }
     }

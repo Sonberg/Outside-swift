@@ -14,16 +14,28 @@ class DetailViewController : UIViewController {
     
     // Placeholder for waether data
     var data : JSON = []
+    var backgroundView : UIImageViewAsync?
     
-    // Outlets
+    //MARK: Outlets
     @IBOutlet weak var CoordinateLabel: UILabel!
     @IBOutlet weak var windSpeedLabel: UILabel!
     @IBOutlet weak var windDegreeLabel: UILabel!
     @IBOutlet weak var weatherIcon: UIImageView!
     
+    // MARK: Actions
+    @IBAction func changeBackgroundButtonPressed(sender: AnyObject) {
+        backgroundView!.downloadImage("https://source.unsplash.com/featured/")
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
     // View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
+        setNeedsStatusBarAppearanceUpdate()
         
         // Close on swipe down
         let swipeDown = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")

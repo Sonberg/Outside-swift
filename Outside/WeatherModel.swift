@@ -10,9 +10,15 @@ import Foundation
 import SwiftyJSON
 
 class WeatherModel {
-    init() {
     
+    // singleton manager
+    class var sharedManager: WeatherModel {
+        struct Singleton {
+            static let instance = WeatherModel()
+        }
+        return Singleton.instance
     }
+    
     
     func getWeather(lat: String, long: String, completion:(object: JSON) -> Void)
     {
